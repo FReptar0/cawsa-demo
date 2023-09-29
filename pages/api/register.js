@@ -17,6 +17,10 @@ export default async function handler(req, res) {
 async function registerInOutOrder(data) {
     const { folio, fechaEntrada, horaEntrada, fechaSalida, horaSalida, placas, nombreConductor } = data;
 
+    if (!folio || !fechaEntrada || !horaEntrada || !fechaSalida || !horaSalida || !placas || !nombreConductor) {
+        return new CustomResponse(400, "Bad request", null, "Bad request");
+    }
+
     const query = `INSERT INTO [dbo].[fesaCawsa] (uuid, folio, fechaEntrada, horaEntrada, fechaSalida, horaSalida, placas, nombreConductor) VALUES ('${UUIDGenerator()}', '${folio}', '${fechaEntrada}', '${horaEntrada}', '${fechaSalida}', '${horaSalida}', '${placas}', '${nombreConductor}')`;
 
     try {
