@@ -1,4 +1,3 @@
-import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -11,6 +10,8 @@ import {
     Text,
 } from '@chakra-ui/react';
 import Select from 'react-select';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 
 const FormSchema = Yup.object().shape({
@@ -37,6 +38,7 @@ const nombresConductorOptions = [
 ];
 
 const FormComponent = () => {
+
     const formik = useFormik({
         initialValues: {
             folio: '',
@@ -48,9 +50,58 @@ const FormComponent = () => {
             nombreConductor: '',
         },
         validationSchema: FormSchema,
-        onSubmit: (values) => {
-            // Aquí puedes manejar la lógica de envío del formulario
+        onSubmit: async (values, { resetForm }) => {
             console.log(values);
+
+            const response = await axios.post('/api/register', values)
+                .catch(() => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        showCancelButton: false,
+                        showConfirmButton: false,
+                        timer: 1500,
+                        toast: true,
+                        position: 'top-right',
+                    }).then(() => {
+                        formik.setFieldValue('placas', '');
+                        formik.setFieldValue('nombreConductor', '');
+                        resetForm();
+                    });
+                });
+
+            if (response.status === 200) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Order saved',
+                    text: 'Order saved successfully',
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true,
+                    position: 'top-right',
+                }).then(() => {
+                    formik.setFieldValue('nombreConductor', '');
+                    formik.setFieldValue('placas', '');
+                    resetForm();
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true,
+                    position: 'top-right',
+                }).then(() => {
+                    formik.setFieldValue('placas', '');
+                    formik.setFieldValue('nombreConductor', '');
+                    resetForm();
+                });
+            }
         },
     });
 
@@ -143,6 +194,7 @@ const FormComponent = () => {
                             onBlur={formik.handleBlur}
                             isSearchable
                             placeholder="Selecciona las placas"
+                            id='placas'
                         />
                     </FormControl>
 
@@ -163,6 +215,7 @@ const FormComponent = () => {
                             onBlur={formik.handleBlur}
                             isSearchable
                             placeholder="Selecciona el nombre del conductor"
+                            id='nombreConductor'
                         />
                     </FormControl>
 
