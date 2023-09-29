@@ -8,6 +8,7 @@ import {
     Button,
     VStack,
     Text,
+    Flex,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import axios from 'axios';
@@ -137,54 +138,89 @@ const FormComponent = () => {
                             value={formik.values.folio}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
+                            placeholder="Ingresa el folio"
                         />
                     </FormControl>
 
-                    <FormControl isRequired isInvalid={formik.touched.fechaEntrada && formik.errors.fechaEntrada}>
-                        <FormLabel>Fecha de Entrada</FormLabel>
-                        <Input
-                            name="fechaEntrada"
-                            type="date"
-                            value={formik.values.fechaEntrada}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                    </FormControl>
+                    <Flex
+                        justifyContent="space-between"
+                        alignItems="center"
+                        width="100%"
+                    >
+                        <FormControl 
+                        isRequired 
+                        isInvalid={formik.touched.fechaEntrada && formik.errors.fechaEntrada}
+                        width={"50%"}
+                        marginRight={"10"}
+                        >
+                            <FormLabel>Fecha de Entrada</FormLabel>
+                            <Input
+                                name="fechaEntrada"
+                                type="date"
+                                value={formik.values.fechaEntrada}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                        </FormControl>
 
-                    <FormControl isRequired isInvalid={formik.touched.horaEntrada && formik.errors.horaEntrada}>
-                        <FormLabel>Hora de Entrada</FormLabel>
-                        <Input
-                            name="horaEntrada"
-                            type="time"
-                            value={formik.values.horaEntrada}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                    </FormControl>
+                        <FormControl 
+                        isRequired 
+                        isInvalid={formik.touched.horaEntrada && formik.errors.horaEntrada}
+                        width={"50%"}
+                        >
+                            <FormLabel>Hora de Entrada</FormLabel>
+                            <Input
+                                name="horaEntrada"
+                                type="time"
+                                value={formik.values.horaEntrada}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                        </FormControl>
+                    </Flex>
 
-                    <FormControl isRequired isInvalid={formik.touched.fechaSalida && formik.errors.fechaSalida}>
-                        <FormLabel>Fecha de Salida</FormLabel>
-                        <Input
-                            name="fechaSalida"
-                            type="date"
-                            value={formik.values.fechaSalida}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                    </FormControl>
+                    <Flex
+                        justifyContent="space-between"
+                        alignItems="center"
+                        width="100%"
+                    >
+                        <FormControl 
+                        isRequired 
+                        isInvalid={formik.touched.fechaSalida && formik.errors.fechaSalida}
+                        width={"50%"}
+                        marginRight={"10"}
+                        >
+                            <FormLabel>Fecha de Salida</FormLabel>
+                            <Input
+                                name="fechaSalida"
+                                type="date"
+                                value={formik.values.fechaSalida}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                width="100%"
+                            />
+                        </FormControl>
 
-                    <FormControl isRequired isInvalid={formik.touched.horaSalida && formik.errors.horaSalida}>
-                        <FormLabel>Hora de Salida</FormLabel>
-                        <Input
-                            name="horaSalida"
-                            type="time"
-                            value={formik.values.horaSalida}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                        />
-                    </FormControl>
+                        <FormControl 
+                        isRequired 
+                        isInvalid={formik.touched.horaSalida && formik.errors.horaSalida}
+                        width={"50%"}
+                        >
+                            <FormLabel>Hora de Salida</FormLabel>
+                            <Input
+                                name="horaSalida"
+                                type="time"
+                                value={formik.values.horaSalida}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                        </FormControl>
+                    </Flex>
 
-                    <FormControl isRequired isInvalid={formik.touched.placas && formik.errors.placas}>
+                    <FormControl 
+                    isRequired 
+                    isInvalid={formik.touched.placas && formik.errors.placas}
+                    >
                         <FormLabel>Placas</FormLabel>
                         <Select
                             name="placas"
