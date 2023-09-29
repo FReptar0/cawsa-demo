@@ -21,7 +21,7 @@ async function registerInOutOrder(data) {
         return new CustomResponse(400, "Bad request", null, "Bad request");
     }
 
-    const query = `INSERT INTO [dbo].[fesaCawsa] (uuid, folio, fechaEntrada, horaEntrada, fechaSalida, horaSalida, placas, nombreConductor) VALUES ('${UUIDGenerator()}', '${folio}', '${fechaEntrada}', '${horaEntrada}', '${fechaSalida}', '${horaSalida}', '${placas}', '${nombreConductor}')`;
+    const query = `INSERT INTO [dbo].[fesaCawsa] (uuid, folio, fechaEntrada, horaEntrada, fechaSalida, horaSalida, placas, nombreConductor, fueImportado) VALUES ('${UUIDGenerator()}', '${folio}', '${fechaEntrada}', '${horaEntrada}', '${fechaSalida}', '${horaSalida}', '${placas}', '${nombreConductor}', 0)`;
 
     try {
         const result = await runQuery(query);
