@@ -9,11 +9,11 @@ import {
     VStack,
     Text,
     Flex,
+    Stack, // Importa el componente Stack de Chakra UI
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
 
 const FormSchema = Yup.object().shape({
     folio: Yup.string().required('El Folio es obligatorio'),
@@ -39,7 +39,6 @@ const nombresConductorOptions = [
 ];
 
 const FormComponent = () => {
-
     const formik = useFormik({
         initialValues: {
             folio: '',
@@ -54,23 +53,22 @@ const FormComponent = () => {
         onSubmit: async (values, { resetForm }) => {
             console.log(values);
 
-            const response = await axios.post('/api/register', values)
-                .catch(() => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Something went wrong!',
-                        showCancelButton: false,
-                        showConfirmButton: false,
-                        timer: 1500,
-                        toast: true,
-                        position: 'top-right',
-                    }).then(() => {
-                        formik.setFieldValue('placas', '');
-                        formik.setFieldValue('nombreConductor', '');
-                        resetForm();
-                    });
+            const response = await axios.post('/api/register', values).catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true,
+                    position: 'top-right',
+                }).then(() => {
+                    formik.setFieldValue('placas', '');
+                    formik.setFieldValue('nombreConductor', '');
+                    resetForm();
                 });
+            });
 
             if (response.status === 200) {
                 Swal.fire({
@@ -142,16 +140,18 @@ const FormComponent = () => {
                         />
                     </FormControl>
 
-                    <Flex
+                    <Stack
+                        direction={{ base: 'column', md: 'row' }} // Esto cambia la dirección del Stack en pantallas pequeñas
                         justifyContent="space-between"
                         alignItems="center"
                         width="100%"
+                        spacing={4} // Espaciado entre los elementos del Stack
                     >
-                        <FormControl 
-                        isRequired 
-                        isInvalid={formik.touched.fechaEntrada && formik.errors.fechaEntrada}
-                        width={"50%"}
-                        marginRight={"10"}
+                        <FormControl
+                            isRequired
+                            isInvalid={formik.touched.fechaEntrada && formik.errors.fechaEntrada}
+                            width={{ base: '100%', md: '50%' }} // Ancho del campo en pantallas pequeñas y medianas
+                            marginRight={{ base: 0, md: '10' }} // Espacio derecho en pantallas medianas
                         >
                             <FormLabel>Fecha de Entrada</FormLabel>
                             <Input
@@ -163,10 +163,10 @@ const FormComponent = () => {
                             />
                         </FormControl>
 
-                        <FormControl 
-                        isRequired 
-                        isInvalid={formik.touched.horaEntrada && formik.errors.horaEntrada}
-                        width={"50%"}
+                        <FormControl
+                            isRequired
+                            isInvalid={formik.touched.horaEntrada && formik.errors.horaEntrada}
+                            width={{ base: '100%', md: '50%' }} // Ancho del campo en pantallas pequeñas y medianas
                         >
                             <FormLabel>Hora de Entrada</FormLabel>
                             <Input
@@ -177,18 +177,20 @@ const FormComponent = () => {
                                 onBlur={formik.handleBlur}
                             />
                         </FormControl>
-                    </Flex>
+                    </Stack>
 
-                    <Flex
+                    <Stack
+                        direction={{ base: 'column', md: 'row' }} // Esto cambia la dirección del Stack en pantallas pequeñas
                         justifyContent="space-between"
                         alignItems="center"
                         width="100%"
+                        spacing={4} // Espaciado entre los elementos del Stack
                     >
-                        <FormControl 
-                        isRequired 
-                        isInvalid={formik.touched.fechaSalida && formik.errors.fechaSalida}
-                        width={"50%"}
-                        marginRight={"10"}
+                        <FormControl
+                            isRequired
+                            isInvalid={formik.touched.fechaSalida && formik.errors.fechaSalida}
+                            width={{ base: '100%', md: '50%' }} // Ancho del campo en pantallas pequeñas y medianas
+                            marginRight={{ base: 0, md: '10' }} // Espacio derecho en pantallas medianas
                         >
                             <FormLabel>Fecha de Salida</FormLabel>
                             <Input
@@ -201,10 +203,10 @@ const FormComponent = () => {
                             />
                         </FormControl>
 
-                        <FormControl 
-                        isRequired 
-                        isInvalid={formik.touched.horaSalida && formik.errors.horaSalida}
-                        width={"50%"}
+                        <FormControl
+                            isRequired
+                            isInvalid={formik.touched.horaSalida && formik.errors.horaSalida}
+                            width={{ base: '100%', md: '50%' }} // Ancho del campo en pantallas pequeñas y medianas
                         >
                             <FormLabel>Hora de Salida</FormLabel>
                             <Input
@@ -215,11 +217,11 @@ const FormComponent = () => {
                                 onBlur={formik.handleBlur}
                             />
                         </FormControl>
-                    </Flex>
+                    </Stack>
 
-                    <FormControl 
-                    isRequired 
-                    isInvalid={formik.touched.placas && formik.errors.placas}
+                    <FormControl
+                        isRequired
+                        isInvalid={formik.touched.placas && formik.errors.placas}
                     >
                         <FormLabel>Placas</FormLabel>
                         <Select
