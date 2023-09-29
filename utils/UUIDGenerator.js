@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export const generateUUID = () => {
+export default function UUIDGenerator() {
     return uuidv4();
-};
+}

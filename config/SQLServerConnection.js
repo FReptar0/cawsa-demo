@@ -7,7 +7,7 @@ const dbConfig = {
     database: process.env.DATABASE ?? 'FESA',
 };
 
-async function runQuery(query) {
+export default async function runQuery(query) {
     const pool = await new sql.ConnectionPool({
         ...dbConfig,
         options: {
@@ -20,7 +20,3 @@ async function runQuery(query) {
     pool.close();
     return result;
 }
-
-module.exports = {
-    runQuery
-};
