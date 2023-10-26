@@ -4,7 +4,7 @@ import {
     Box,
     FormControl,
     FormLabel,
-    Input,
+    Text,
     Button,
     VStack,
 } from '@chakra-ui/react';
@@ -70,6 +70,20 @@ const QRFormComponent = () => {
 
     return (
         <Box p={4} borderRadius="md" boxShadow="md" maxWidth="2xl" mx="auto" my={16}>
+            <Text
+                fontSize="2xl"
+                fontWeight="bold"
+                mb={4}
+                backgroundColor="orange.300"
+                textAlign="center"
+                height="50px"
+                lineHeight="50px"
+                borderRadius="md"
+                width="90%"
+                mx="auto"
+            >
+                Generar QR
+            </Text>
             <form onSubmit={formik.handleSubmit}>
                 <VStack spacing={4} padding={8}>
                     <FormControl isRequired isInvalid={formik.touched.placas && formik.errors.placas}>
