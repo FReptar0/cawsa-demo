@@ -43,7 +43,7 @@ const Header = () => {
                     <MenuList>
                         {!isIndex && (
                             <MenuItem>
-                                <Link href="/">Manual Entry</Link>
+                                <Link href="/">Entrada manual</Link>
                             </MenuItem>
                         )}
                         {!isGenerate && (
@@ -72,7 +72,7 @@ const Header = () => {
             <Box margin={20} flex="1" display={{ base: 'none', md: 'flex' }}>
                 {!isIndex && (
                     <Link marginX={4} fontSize={15} fontWeight="medium" href="/">
-                        Manual Entry
+                        Entrada manual
                     </Link>)
                 }
                 {!isGenerate && (
