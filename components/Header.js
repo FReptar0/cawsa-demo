@@ -41,6 +41,11 @@ const Header = () => {
                         size="lg"
                     />
                     <MenuList>
+                        {!isIndex && (
+                            <MenuItem>
+                                <Link href="/">Manual Entry</Link>
+                            </MenuItem>
+                        )}
                         {!isGenerate && (
                             <MenuItem>
                                 <Link href="/generate">Generate QR</Link>
@@ -56,11 +61,6 @@ const Header = () => {
                                 <Link href="/history">Historial</Link>
                             </MenuItem>
                         )}
-                        {!isIndex && (
-                            <MenuItem>
-                                <Link href="/">Manual Entry</Link>
-                            </MenuItem>
-                        )}
                     </MenuList>
                 </Menu>
             </Box>
@@ -70,6 +70,11 @@ const Header = () => {
                 </Text>
             </Flex>
             <Box margin={20} flex="1" display={{ base: 'none', md: 'flex' }}>
+                {!isIndex && (
+                    <Link marginX={4} fontSize={15} fontWeight="medium" href="/">
+                        Manual Entry
+                    </Link>)
+                }
                 {!isGenerate && (
                     <Link marginX={4} fontSize={15} fontWeight="medium" href="/generate">
                         Generate QR
@@ -85,11 +90,6 @@ const Header = () => {
                         Historial
                     </Link>
                 )}
-                {!isIndex && (
-                    <Link marginX={4} fontSize={15} fontWeight="medium" href="/">
-                        Manual Entry
-                    </Link>)
-                }
             </Box>
         </Flex>
     );
