@@ -25,8 +25,8 @@ const Header = () => {
             as="header"
             align="center"
             justify="space-between"
-            px={10}
-            py={10}
+            px={4}
+            py={4}
             boxShadow="md"
             height="60px"
             marginBottom="4"
