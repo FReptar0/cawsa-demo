@@ -123,7 +123,7 @@ const FormComponent = () => {
                 width="90%"
                 mx="auto"
             >
-                In/Out Data Entry
+                Registro de Entrada y Salida
             </Text>
             <form onSubmit={formik.handleSubmit}>
                 <VStack spacing={4} padding={8}>

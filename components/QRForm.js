@@ -7,7 +7,6 @@ import {
     Input,
     Button,
     VStack,
-    Stack,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import axios from 'axios';
@@ -18,18 +17,23 @@ const FormSchema = Yup.object().shape({
     nombreConductor: Yup.string().required('El nombre del conductor es obligatorio'),
 });
 
-// Ejemplo de opciones para las listas desplegables
 const placasOptions = [
     { value: 'ABC123', label: 'ABC123' },
     { value: 'XYZ456', label: 'XYZ456' },
     { value: 'DEF789', label: 'DEF789' },
 ];
 
+const nombresConductorOptions = [
+    { value: 'Juan Perez', label: 'Juan Pérez' },
+    { value: 'María Gomez', label: 'María Gómez' },
+    { value: 'Luis Rodriguez', label: 'Luis Rodríguez' },
+];
+
 const QRFormComponent = () => {
     const formik = useFormik({
         initialValues: {
             placas: '',
-            nombreConductor: '', // Agregamos el campo nombreConductor
+            nombreConductor: '', // Cambiamos el campo nombreConductor a un Select
         },
         validationSchema: FormSchema,
         onSubmit: async (values, { resetForm }) => {
@@ -83,13 +87,14 @@ const QRFormComponent = () => {
 
                     <FormControl isRequired isInvalid={formik.touched.nombreConductor && formik.errors.nombreConductor}>
                         <FormLabel>Nombre del Conductor</FormLabel>
-                        <Input
+                        <Select
                             name="nombreConductor"
-                            type="text"
-                            value={formik.values.nombreConductor}
-                            onChange={formik.handleChange}
+                            value={nombresConductorOptions.find((option) => option.value === formik.values.nombreConductor)}
+                            options={nombresConductorOptions}
+                            onChange={(selectedOption) => formik.setFieldValue('nombreConductor', selectedOption.value)}
                             onBlur={formik.handleBlur}
-                            placeholder="Ingresa el nombre del conductor"
+                            isSearchable
+                            placeholder="Selecciona el nombre del conductor"
                         />
                     </FormControl>
 
