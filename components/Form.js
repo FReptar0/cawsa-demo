@@ -8,8 +8,7 @@ import {
     Button,
     VStack,
     Text,
-    Flex,
-    Stack, // Importa el componente Stack de Chakra UI
+    Stack,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import axios from 'axios';
@@ -57,7 +56,7 @@ const FormComponent = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Something went wrong!',
+                    text: 'Algo salio mal!!',
                     showCancelButton: false,
                     showConfirmButton: false,
                     timer: 1500,
@@ -73,8 +72,8 @@ const FormComponent = () => {
             if (response.status === 200) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Order saved',
-                    text: 'Order saved successfully',
+                    title: 'Registro guardado',
+                    text: 'Registro guardado con exito',
                     showCancelButton: false,
                     showConfirmButton: false,
                     timer: 1500,
@@ -89,7 +88,7 @@ const FormComponent = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Something went wrong!',
+                    text: 'Algo salio mal!!',
                     showCancelButton: false,
                     showConfirmButton: false,
                     timer: 1500,
