@@ -17,17 +17,15 @@ export default function qrhandlergenerator(req, res) {
 
 
 async function generateQR(data) {
-    const { placas, NIV, maximoPeso, ultimaVerificacion } = data;
+    const { placas, nombreConductor } = data;
 
-    if (!placas || !NIV || !maximoPeso || !ultimaVerificacion) {
+    if (!placas || !nombreConductor) {
         return new CustomResponse(400, "Bad request", null, "Bad request");
     }
 
     const qrData = {
         placas,
-        NIV,
-        maximoPeso,
-        ultimaVerificacion
+        nombreConductor
     }
 
     try {
