@@ -17,7 +17,7 @@ export async function connectToDatabase() {
 
     try {
         const client = await MongoClient.connect(uri, options);
-        const db = client.db('tersoft');
+        const db = client.db('demos');
         cachedClient = client;
         cachedDb = db;
         return db;
