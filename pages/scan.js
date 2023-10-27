@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import QRFormReader from "@/components/QRTemplateReader";
 import { Container } from "@chakra-ui/react";
 
 export default function scan() {
@@ -6,7 +7,7 @@ export default function scan() {
         <>
             <Header />
             <Container maxW="container.xl">
-                <h1>Scan</h1>
+                <QRFormReader />
             </Container>
         </>
     )

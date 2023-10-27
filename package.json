@@ -18,6 +18,7 @@
     "mssql": "^10.0.1",
     "next": "latest",
     "qrcode": "^1.5.3",
+    "qrcode-reader": "^1.0.4",
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "^4.11.0",
