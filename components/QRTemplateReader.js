@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const QRFormComponent = () => {
 
@@ -20,48 +21,13 @@ const QRFormComponent = () => {
 
         function onScanSuccess(qrCodeMessage) {
             console.log(qrCodeMessage);
+            // pasar el qrCodeMessage a json
+            const qrCodeMessageJson = JSON.parse(qrCodeMessage);
+            console.log(qrCodeMessageJson);
             scanner.pause();
-            setScanResult(qrCodeMessage);
+            setScanResult(qrCodeMessageJson);
 
-            Swal.fire({
-                icon: 'question',
-                title: '¿Desea cambiar el nombre del conductor?',
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: `Si`,
-                denyButtonText: `No`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: 'Ingrese el nombre del conductor',
-                        input: 'select',
-                        inputOptions: {
-                            'Juan': 'Juan',
-                            'Pedro': 'Pedro',
-                            'Maria': 'Maria',
-                        },
-                        inputPlaceholder: 'Seleccione un nombre',
-                        showCancelButton: true,
-                        inputValidator: (value) => {
-                            return new Promise((resolve) => {
-                                if (value !== '') {
-                                    resolve();
-                                } else {
-                                    resolve('Debe seleccionar un nombre');
-                                }
-                            });
-                        }
-                    }).then((result) => {
-                        // imprimir el nombre del conductor en la alerta
-                        Swal.fire('Conductor: ' + result.value);
-                        scanner.resume();
-                    });
-                } else if (result.isDenied) {
-                    scanner.resume();
-                } else {
-                    scanner.resume();
-                }
-            });
+            // TODO: enviar el qrCodeMessageJson al backend
         }
     }, []);
 
