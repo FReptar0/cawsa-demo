@@ -18,6 +18,7 @@ const QRFormComponent = () => {
 
         const handleQrCode = (json) => {
             console.log('Código QR leído: ' + json);
+            alert('Código QR leído: ' + json);
         };
 
         if (isCameraEnabled) {
@@ -35,6 +36,7 @@ const QRFormComponent = () => {
 
                             try {
                                 qr.decode(canvas);
+                                console.log('Código QR leído: ' + qr.decode(canvas));
                             } catch (e) {
                                 console.error(e);
                             }
