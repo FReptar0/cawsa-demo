@@ -4,9 +4,16 @@ import { Html5QrcodeScanner } from 'html5-qrcode';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
+
 const QRFormComponent = () => {
 
     const [scanResult, setScanResult] = useState(null);
+
+    const nombresConductorOptions = [
+        { value: 'Juan Perez', label: 'Juan Pérez' },
+        { value: 'María Gomez', label: 'María Gómez' },
+        { value: 'Luis Rodriguez', label: 'Luis Rodríguez' },
+    ];
 
     useEffect(() => {
         const scanner = new Html5QrcodeScanner('reader', {
@@ -19,15 +26,60 @@ const QRFormComponent = () => {
 
         scanner.render(onScanSuccess);
 
-        function onScanSuccess(qrCodeMessage) {
-            console.log(qrCodeMessage);
-            // pasar el qrCodeMessage a json
+        async function onScanSuccess(qrCodeMessage) {
             const qrCodeMessageJson = JSON.parse(qrCodeMessage);
-            console.log(qrCodeMessageJson);
             scanner.pause();
             setScanResult(qrCodeMessageJson);
 
-            // TODO: enviar el qrCodeMessageJson al backend
+            try {
+                const response = await axios.post('/api/scan', qrCodeMessageJson);
+                console.log(response);
+                if (response.status === 100) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Orden de entrada registrada',
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        timer: 1500
+                    }).then(() => {
+                        setScanResult(null);
+                    });
+                } else if (response.status === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Orden de salida registrada',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        position: 'top-end'
+                    }).then(() => {
+                        setScanResult(null);
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No se pudo registrar la orden de entrada o salida',
+                        footer: 'Intente de nuevo'
+                    }).then(() => {
+                        setScanResult(null);
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Orden de entrada registrada',
+                    showConfirmButton: false,
+                    position: 'top-end',
+                    timer: 1500
+                }).then(() => {
+                    setScanResult(null);
+                });
+            }
+
+            // esperar 2 segundos para volver a escanear
+            setTimeout(() => {
+                scanner.resume();
+            }, 2000);
         }
     }, []);
 
