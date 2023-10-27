@@ -1,60 +1,69 @@
-import React, { useEffect, useRef, useState } from 'react';
-import QrCode from 'qrcode-reader';
-import {
-    Box,
-    Button,
-    HStack,
-    Text,
-} from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Box, Text } from '@chakra-ui/react';
+import { Html5QrcodeScanner } from 'html5-qrcode';
+import Swal from 'sweetalert2';
 
 const QRFormComponent = () => {
-    const videoRef = useRef(null);
-    const [isQRScanning, setIsQRScanning] = useState(false);
-    const [isCameraEnabled, setIsCameraEnabled] = useState(false);
+
+    const [scanResult, setScanResult] = useState(null);
 
     useEffect(() => {
-        const qr = new QrCode();
-        const video = videoRef.current;
+        const scanner = new Html5QrcodeScanner('reader', {
+            fps: 5,
+            qrbox: {
+                width: 250,
+                height: 250
+            },
+        });
 
-        const handleQrCode = (json) => {
-            console.log('Código QR leído: ' + json);
-            alert('Código QR leído: ' + json);
-        };
+        scanner.render(onScanSuccess);
 
-        if (isCameraEnabled) {
-            navigator.mediaDevices
-                .getUserMedia({ video: { facingMode: 'environment' } })
-                .then((stream) => {
-                    video.srcObject = stream;
-                    video.setAttribute('playsinline', true);
-                    video.play().then(() => {
-                        video.addEventListener('loadedmetadata', function () {
-                            const canvas = document.createElement('canvas');
-                            canvas.width = 100; // Establece el ancho del lienzo en 100px
-                            canvas.height = 100; // Establece la altura del lienzo en 100px
-                            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        function onScanSuccess(qrCodeMessage) {
+            console.log(qrCodeMessage);
+            scanner.pause();
+            setScanResult(qrCodeMessage);
 
-                            try {
-                                qr.decode(canvas);
-                                console.log('Código QR leído: ' + qr.decode(canvas));
-                            } catch (e) {
-                                console.error(e);
-                            }
-                        });
+            Swal.fire({
+                icon: 'question',
+                title: '¿Desea cambiar el nombre del conductor?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Si`,
+                denyButtonText: `No`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Ingrese el nombre del conductor',
+                        input: 'select',
+                        inputOptions: {
+                            'Juan': 'Juan',
+                            'Pedro': 'Pedro',
+                            'Maria': 'Maria',
+                        },
+                        inputPlaceholder: 'Seleccione un nombre',
+                        showCancelButton: true,
+                        inputValidator: (value) => {
+                            return new Promise((resolve) => {
+                                if (value !== '') {
+                                    resolve();
+                                } else {
+                                    resolve('Debe seleccionar un nombre');
+                                }
+                            });
+                        }
+                    }).then((result) => {
+                        // imprimir el nombre del conductor en la alerta
+                        Swal.fire('Conductor: ' + result.value);
+                        scanner.resume();
                     });
-                });
+                } else if (result.isDenied) {
+                    scanner.resume();
+                } else {
+                    scanner.resume();
+                }
+            });
         }
-
-        qr.callback = (result) => {
-            if (result) {
-                handleQrCode(result.result);
-            }
-        };
-    }, [isCameraEnabled]);
-
-    const toggleCamera = () => {
-        setIsCameraEnabled(!isCameraEnabled);
-    };
+    }, []);
 
     return (
         <Box
@@ -79,28 +88,8 @@ const QRFormComponent = () => {
             >
                 Scan QR
             </Text>
-            <Box
-                border="1px solid #ccc"
-                borderRadius="lg"
-                width="300px" // Establece el ancho del cuadro del video en 100px
-                height="220px" // Establece la altura del cuadro del video en 100px
-                overflow="hidden"
-                position="relative"
-                background={'blackAlpha.800'}
-                mx="auto"
-            >
-                {isCameraEnabled && (
-                    <video ref={videoRef}></video>
-                )}
-            </Box>
-            <HStack spacing={4} mt={4} justifyContent="center">
-                <Button onClick={() => setIsQRScanning(!isQRScanning)}>
-                    {isQRScanning ? 'Detener Escaneo QR' : 'Iniciar Escaneo QR'}
-                </Button>
-                <Button onClick={toggleCamera}>
-                    {isCameraEnabled ? 'Deshabilitar Cámara' : 'Habilitar Cámara'}
-                </Button>
-            </HStack>
+            <Box id="reader" />
+
         </Box>
     );
 };
