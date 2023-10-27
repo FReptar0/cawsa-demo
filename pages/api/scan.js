@@ -53,6 +53,6 @@ async function registerInOrOutOrder(body) {
         await collection.insertOne(data);
         await closeConnection();
 
-        return new CustomResponse(200, "Orden de entrada registrada", null, "Orden de entrada registrada");
+        return new CustomResponse(100, "Orden de entrada registrada", null, "Orden de entrada registrada");
     }
 }

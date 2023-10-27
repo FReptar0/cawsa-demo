@@ -1,61 +1,21 @@
 import Header from "@/components/Header";
 import { Container, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
+import { connectToDatabase } from "@/config/MongoDB";
 
-export default function history() {
+export default function history({ history}) {
     // Datos estáticos para la tabla
-    const data = [
-        {
-            folio: "001",
-            placas: "ABC123",
-            conductor: "Juan Pérez",
-            fechaEntrada: "2023-10-20",
-            horaEntrada: "09:00 AM",
-            fechaSalida: "2023-10-20",
-            horaSalida: "05:00 PM",
-            status: "Completado",
-        },
-        {
-            folio: "001",
-            placas: "ABC123",
-            conductor: "Juan Pérez",
-            fechaEntrada: "2023-10-20",
-            horaEntrada: "09:00 AM",
-            fechaSalida: "2023-10-20",
-            horaSalida: "05:00 PM",
-            status: "Completado",
-        },
-        {
-            folio: "001",
-            placas: "ABC123",
-            conductor: "Juan Pérez",
-            fechaEntrada: "2023-10-20",
-            horaEntrada: "09:00 AM",
-            fechaSalida: "",
-            horaSalida: "",
-            status: "Salida pendiente",
-        },
-        {
-            folio: "001",
-            placas: "ABC123",
-            conductor: "Juan Pérez",
-            fechaEntrada: "2023-10-20",
-            horaEntrada: "09:00 AM",
-            fechaSalida: "",
-            horaSalida: "",
-            status: "Salida pendiente",
-        },
-        {
-            folio: "001",
-            placas: "ABC123",
-            conductor: "Juan Pérez",
-            fechaEntrada: "2023-10-20",
-            horaEntrada: "09:00 AM",
-            fechaSalida: "",
-            horaSalida: "",
-            status: "Salida pendiente",
-        },
-        // Agregar más filas de datos aquí
-    ];
+    const data = history.map((item) => {
+        return {
+            folio: item.folio,
+            placas: item.placas,
+            conductor: item.nombreConductor,
+            fechaEntrada: item.fechaSinHora,
+            horaEntrada: item.horaEntrada,
+            fechaSalida: item.fechaSalida,
+            horaSalida: item.horaSalida,
+            status: item.isOut ? "Salida registrada" : "Salida pendiente",
+        };
+    });
 
     return (
         <>
@@ -102,4 +62,19 @@ export default function history() {
             </Container>
         </>
     );
+}
+
+export async function getServerSideProps() {
+    const db = await connectToDatabase();
+    const collection = db.collection("cawsa-register-history");
+    const query = {};
+    const options = {};
+
+    const result = await collection.find(query, options).toArray();
+
+    return {
+        props: {
+            history: JSON.parse(JSON.stringify(result)),
+        },
+    };
 }
